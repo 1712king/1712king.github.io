@@ -1,0 +1,63 @@
+
+h1{
+
+color:rgb(255, 255, 255);
+
+font-family: cursive;
+
+background-color: rgb(97, 92, 92);
+
+
+}
+
+
+
+body{
+
+    background: rgb(0,212,255);
+    background: linear-gradient(360deg, rgba(0,212,255,1) 52%, rgba(2,0,36,1) 52%, rgba(9,9,121,1) 100%);
+
+
+}
+
+
+img{
+
+border: 35px   outset red               ;
+
+border-radius: 10000000000000000000000000000000000 px; 
+
+width: 200px;
+
+
+}
+
+
+
+.Planta{
+
+background-color: darkgreen;
+
+
+}
+
+
+
+
+
+.Fogo{
+
+
+background-color: darkred;
+
+}
+
+
+
+
+
+.Agua{
+
+ border: rgb(6, 6, 82);
+
+}
