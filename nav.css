@@ -1,0 +1,49 @@
+nav{
+    background-color: rgb(252, 248, 19);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 10px solid darkblue;
+    gap: 15%;
+   
+}
+
+nav > a {
+
+color: rgb(255, 79, 10);
+display: flex;
+align-items: center;
+justify-content: center;
+background-color: rgb(0, 2, 100);
+font-size: 50px;
+border-radius: 100%;
+height: 200px;
+width: 200px;
+text-align: center;
+
+}
+
+
+
+
+
+nav > div:hover{
+
+background-color: rgb(20, 5, 104);
+padding: 6px;
+
+
+}
+
+body{
+
+background-color: orangered;
+margin: 0;
+
+
+}
+
+
+
+
+a{font-size: x-large;}
