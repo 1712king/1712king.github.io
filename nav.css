@@ -3,7 +3,7 @@ nav{
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 10px solid darkblue;
+    border-bottom: 10% solid darkblue;
     gap: 15%;
    
 }
@@ -17,8 +17,8 @@ justify-content: center;
 background-color: rgb(0, 2, 100);
 font-size: 50px;
 border-radius: 100%;
-height: 200px;
-width: 200px;
+height: 200%;
+width: 200%;
 text-align: center;
 
 }
