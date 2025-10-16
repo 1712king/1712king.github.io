@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon RNG - Completar Pokédex</title>
+    <link rel="icon" href="./pokeball-favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./RNG.css">
+    <style>
+        /* small overrides/local styles */
+        body { font-family: Arial, Helvetica, sans-serif; color: #222; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .controls { display:flex; gap:12px; align-items:center; justify-content:center; margin-bottom:16px; }
+        .encounter-card { background: white; border-radius:8px; padding:16px; box-shadow:0 6px 18px rgba(0,0,0,0.06); display:flex; gap:16px; align-items:center; }
+        .poke-img { width:160px; height:160px; display:flex; align-items:center; justify-content:center; }
+        .poke-img img { max-width:100%; max-height:100%; }
+        .pokedex-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr)); gap:8px; margin-top:12px; }
+        .dex-cell { background:#fff; border-radius:6px; padding:6px; text-align:center; font-size:12px; box-shadow:0 2px 6px rgba(0,0,0,0.04); cursor:pointer; }
+        .dex-cell.empty { opacity:0.35; }
+        .badge { display:inline-block; padding:4px 8px; border-radius:999px; background:#eee; margin-right:6px; font-size:12px; }
+        .types { margin-top:8px; }
+        .progress { height:12px; background:#e6eef8; border-radius:999px; overflow:hidden; }
+        .progress > i { display:block; height:100%; background:linear-gradient(90deg,#4aa3ff,#2ec99b); }
+        .toolbar { display:flex; gap:8px; align-items:center; justify-content:space-between; margin-bottom:8px; }
+        .search { width:260px; }
+        @media (max-width:640px){ .controls{flex-direction:column} .encounter-card{flex-direction:column} }
+    </style>
+</head>
+<body>
+        <div class="app-panel">
+            <div class="container">
+        <h1>Pokémon RNG — Complete a Pokédex</h1>
+
+        <div class="toolbar">
+            <div>
+                <button id="btn-encounter">Encontrar Pokémon</button>
+                <button id="btn-random3">Encontrar 3 seguidos</button>
+                <button id="btn-export">Exportar Pokédex</button>
+                <button id="btn-import">Importar</button>
+                <button id="btn-reset">Resetar Pokédex</button>
+
+                <select id="type-filter" aria-label="Filtrar por tipo">
+                    <option value="">Todos os tipos</option>
+                </select>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px">
+                <input id="search" class="search" placeholder="Buscar por nome ou #" />
+                <div style="min-width:240px; display:flex;flex-direction:column;gap:6px">
+                    <div style="display:flex;justify-content:space-between;align-items:center">
+                        <div style="font-size:13px">Progresso: <span id="caught-count">0</span>/<span id="total-count">0</span></div>
+                        <div style="font-size:13px">Lendários capturados: <strong id="legendary-count">0</strong></div>
+                        <div style="font-size:13px">Bola atual: <strong id="ball-type">Pokébola</strong> <small style="color:#666" id="ball-progress">(0/5)</small></div>
+                    </div>
+                    <div class="progress" aria-hidden>
+                        <i id="progress-bar" style="width:0%"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="controls">
+            <div class="encounter-card" style="flex:1;">
+                <div class="poke-img-wrapper" style="position:relative">
+                    <div class="poke-img" id="poke-img">
+                        <img src="" alt="" id="poke-image" style="display:none">
+                    </div>
+                    <!-- pokeball removed per user request -->
+                    <div id="encounter-status" style="position:absolute; left:8px; bottom:8px; font-weight:600; color:#333"></div>
+                </div>
+                <div style="flex:1">
+                    <div style="display:flex;align-items:center;gap:12px">
+                        <h2 id="poke-name" style="margin:0">—</h2>
+                        <div id="poke-id" class="badge">#—</div>
+                    </div>
+                    <div id="poke-types" class="types"></div>
+                    <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+                        <label for="ball-select" style="font-size:13px">Bolas:</label>
+                        <select id="ball-select">
+                            <option value="pokeball">Pokébola</option>
+                            <option value="greatball">Great Ball</option>
+                            <option value="ultraball">Ultra Ball</option>
+                        </select>
+                        <div id="ball-inventory" class="ball-inventory" style="font-size:13px;color:#666">
+                            <div class="ball-item" id="ball-pokeball" title="Pokébola">
+                                <svg class="ball-icon" viewBox="0 0 100 100" width="20" height="20" aria-hidden="true">
+                                    <circle cx="50" cy="50" r="45" fill="#fff" stroke="#222" stroke-width="4"/>
+                                    <path d="M5 50a45 45 0 0 0 90 0" fill="#d93b3b" />
+                                    <circle cx="50" cy="50" r="12" fill="#fff" stroke="#222" stroke-width="3" />
+                                    <circle cx="50" cy="50" r="5" fill="#222" />
+                                </svg>
+                                <span class="ball-count" id="count-pokeball">∞</span>
+                                <span class="infinite-badge" aria-hidden="true">∞</span>
+                            </div>
+                            <div class="ball-item" id="ball-greatball" title="Great Ball">
+                                <svg class="ball-icon" viewBox="0 0 100 100" width="20" height="20" aria-hidden="true">
+                                    <circle cx="50" cy="50" r="45" fill="#fff" stroke="#222" stroke-width="4"/>
+                                    <path d="M5 50a45 45 0 0 0 90 0" fill="#4aa3ff" />
+                                    <circle cx="50" cy="50" r="12" fill="#fff" stroke="#222" stroke-width="3" />
+                                    <circle cx="50" cy="50" r="5" fill="#222" />
+                                </svg>
+                                <span class="ball-count" id="count-greatball">2</span>
+                            </div>
+                            <div class="ball-item" id="ball-ultraball" title="Ultra Ball">
+                                <svg class="ball-icon" viewBox="0 0 100 100" width="20" height="20" aria-hidden="true">
+                                    <circle cx="50" cy="50" r="45" fill="#fff" stroke="#222" stroke-width="4"/>
+                                    <path d="M5 50a45 45 0 0 0 90 0" fill="#8a2be2" />
+                                    <circle cx="50" cy="50" r="12" fill="#fff" stroke="#222" stroke-width="3" />
+                                    <circle cx="50" cy="50" r="5" fill="#222" />
+                                </svg>
+                                <span class="ball-count" id="count-ultraball">1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:10px">
+                        <button id="btn-catch">Capturar</button>
+                        <button id="btn-run">Fugir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h3>Pokédex</h3>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+                <div style="display:flex;gap:8px;align-items:center">
+                    <button id="prev-page">Anterior</button>
+                    <div> Página <span id="page-num">1</span> / <span id="page-total">1</span></div>
+                    <button id="next-page">Próxima</button>
+                </div>
+                <div style="font-size:12px;color:#555">Itens por página:
+                    <select id="page-size"><option>24</option><option selected>48</option><option>96</option></select>
+                </div>
+            </div>
+            <div id="pokedex" class="pokedex-grid"></div>
+        </div>
+
+  <!-- existing modal / toast / footer -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <button id="modal-close" class="modal-close">×</button>
+      <div id="modal-body" class="modal-body"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <footer class="app-footer">
+    <small>Dados via PokéAPI • Projeto local</small>
+  </footer>
+
+  <script src="RNG.js"></script>
+
+</body>
+</html>

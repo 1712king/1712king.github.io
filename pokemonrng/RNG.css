@@ -1,0 +1,105 @@
+/* Base styles for Pokémon RNG */
+:root{
+  --bg:#f7f9fc;
+  --card:#fff;
+  --muted:#666;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter, system-ui, Arial, Helvetica, sans-serif;color:#222;min-height:100vh}
+
+/* Pokémon city background */
+body::before{
+  content:"";
+  position:fixed;inset:0;z-index:-2;
+  background-image:url('./assets/pokemon-city.svg');
+  background-size:cover;background-position:top center;background-repeat:no-repeat;
+  filter:contrast(0.98) saturate(0.98) brightness(0.98);
+}
+
+/* subtle dark overlay to help readability */
+body::after{
+  content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.75));
+}
+
+.app-panel{max-width:1000px;margin:18px auto;padding:14px;background:rgba(255,255,255,0.82);border-radius:12px;box-shadow:0 8px 30px rgba(16,24,40,0.08)}
+.container{max-width:920px;margin:0 auto;padding:6px}
+.toolbar, .controls{margin-bottom:12px}
+.pokedex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px}
+.dex-cell{background:var(--card);border-radius:8px;padding:8px;text-align:center;font-size:13px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.04)}
+.dex-cell.empty{opacity:.35}
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.35)}
+.modal[aria-hidden="false"]{display:flex}
+.modal-content{background:#fff;padding:18px;border-radius:10px;max-width:720px;width:92%}
+.modal-close{position:absolute;right:18px;top:12px;border:0;background:transparent;font-size:22px}
+.toast{position:fixed;right:18px;bottom:18px;background:#222;color:#fff;padding:10px 14px;border-radius:8px;display:none}
+.toast.show{display:block}
+.poke-img{width:160px;height:160px;background:linear-gradient(180deg,#fff,#f2f6ff);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.poke-img img{max-width:100%;max-height:100%}
+.pokeball{position:absolute;right:12px;top:12px;cursor:pointer}
+
+/* capture effect overlay inside the poke-img-wrapper */
+.capture-effect{position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;display:flex;align-items:center;justify-content:center}
+.capture-flash{position:absolute;width:80%;height:80%;border-radius:12px;background:radial-gradient(circle at 50% 40%, rgba(255,255,255,0.95), rgba(255,255,255,0.6) 40%, rgba(255,255,255,0) 60%);opacity:0;transform:scale(.8);animation: flash-in 420ms ease-out forwards}
+@keyframes flash-in{0%{opacity:0;transform:scale(.8)}50%{opacity:1;transform:scale(1.05)}100%{opacity:0;transform:scale(1.2)}}
+
+.capture-particle{position:absolute;width:8px;height:10px;border-radius:2px;opacity:0.95;transform:translateY(0) rotate(0);animation: particle-up 900ms cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes particle-up{0%{transform:translateY(20px) rotate(0);opacity:1}60%{opacity:1}100%{transform:translateY(-120px) rotate(360deg);opacity:0}}
+
+.capture-glow{box-shadow:0 8px 30px rgba(255,215,100,0.25), inset 0 0 18px rgba(255,240,160,0.18);border-radius:12px;animation: glow-pop 600ms ease-out}
+@keyframes glow-pop{0%{transform:scale(.98);filter:brightness(1)}50%{transform:scale(1.04);filter:brightness(1.25)}100%{transform:scale(1);filter:brightness(1)}}
+.poke-img-wrapper{position:relative}
+.poke-img img.flee{animation: flee 700ms ease forwards}
+
+@keyframes flee{
+  0%{transform:translateY(0) scale(1);opacity:1}
+  40%{transform:translateY(-12px) scale(.98);opacity:.9}
+  100%{transform:translateX(160px) translateY(-40px) scale(.6);opacity:0}
+}
+
+/* Ball inventory styles */
+.ball-inventory{display:flex;gap:8px;align-items:center}
+.ball-item{display:flex;align-items:center;gap:6px;padding:6px 8px;background:#fff;border-radius:999px;box-shadow:0 2px 6px rgba(0,0,0,0.06);font-size:13px}
+.ball-item .ball-icon{width:20px;height:20px;display:inline-block}
+.ball-item .ball-count{font-weight:600;color:#333}
+.ball-item[aria-disabled="true"]{opacity:.45}
+
+/* small infinity badge for infinite pokeballs */
+.ball-item{position:relative}
+.infinite-badge{position:absolute;right:6px;bottom:6px;min-width:18px;height:18px;border-radius:999px;background:rgba(0,0,0,0.85);color:#fff;font-size:11px;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,0.12)}
+
+/* Pixel-art sprite styling */
+.dex-cell img.pixel{width:56px;height:56px;image-rendering:pixelated;margin:6px auto;display:block}
+.dex-cell.captured{display:flex;flex-direction:column;align-items:center;gap:6px}
+
+/* captured card hover/metadata */
+.dex-cell.captured:hover{transform:translateY(-6px);box-shadow:0 8px 22px rgba(0,0,0,0.12)}
+.dex-cell.captured img.pixel{transition:transform .18s ease}
+.dex-cell.captured:hover img.pixel{transform:scale(1.12)}
+.shiny-badge{position:absolute;margin-top:-8px;background:gold;color:#222;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700}
+.captured-date{font-size:11px;color:#888;margin-top:4px}
+
+/* Shiny effect: glow + confetti */
+.shiny-glow{animation: shiny-pulse 1200ms ease-in-out; box-shadow:0 6px 26px rgba(255,215,0,0.35), inset 0 0 8px rgba(255,240,160,0.12); border-radius:8px}
+@keyframes shiny-pulse{
+  0%{transform:scale(1);filter:brightness(1)}
+  50%{transform:scale(1.06);filter:brightness(1.25)}
+  100%{transform:scale(1);filter:brightness(1)}
+}
+
+.confetti-piece{position:absolute;width:10px;height:14px;border-radius:2px;opacity:0.95;transform:translateY(0) rotate(0);animation: confetti-fall 1200ms cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes confetti-fall{
+  0%{transform:translateY(0) rotate(0);opacity:1}
+  70%{opacity:1}
+  100%{transform:translateY(-140px) translateX(40px) rotate(360deg);opacity:0}
+}
+
+/* pulse when inventory changes */
+.pulse{animation: pulse 450ms ease}
+/* pulse helper for the caught-count */
+#caught-count.pulse{display:inline-block}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
+.poke-types{display:flex;gap:6px}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#eee;font-size:12px}
+.progress{height:12px;background:#e6eef8;border-radius:999px;overflow:hidden}
+.progress > i{display:block;height:100%;background:linear-gradient(90deg,#4aa3ff,#2ec99b)}
+@media (max-width:640px){.controls{flex-direction:column}.encounter-card{flex-direction:column}}

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pokémon-style city background (simple, lightweight SVG) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#9be7ff" />
+      <stop offset="60%" stop-color="#dfefff" />
+      <stop offset="100%" stop-color="#f7fbff" />
+    </linearGradient>
+    <linearGradient id="hill" x1="0" x2="1">
+      <stop offset="0%" stop-color="#d0f1d8"/>
+      <stop offset="100%" stop-color="#a7e0b6"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="30%" cy="18%" r="40%">
+      <stop offset="0%" stop-color="#ffd47a"/>
+      <stop offset="60%" stop-color="#ffb86b"/>
+      <stop offset="100%" stop-color="#ff8d6a"/>
+    </radialGradient>
+  </defs>
+
+  <!-- sky -->
+  <rect width="100%" height="100%" fill="url(#sky)" />
+
+  <!-- distant hills -->
+  <ellipse cx="1200" cy="820" rx="700" ry="260" fill="url(#hill)" opacity="0.9" />
+  <ellipse cx="400" cy="820" rx="480" ry="160" fill="#c8efc9" opacity="0.95" />
+
+  <!-- sun / pokeball motif -->
+  <g transform="translate(300,140) scale(1)">
+    <circle cx="0" cy="0" r="62" fill="url(#sun)" />
+    <circle cx="0" cy="0" r="42" fill="#fff" />
+    <path d="M -42 0 A 42 42 0 0 1 42 0 L 42 6 A 48 48 0 0 1 -42 6 Z" fill="#e33f3f" opacity="0.95" />
+    <circle cx="0" cy="0" r="12" fill="#222" />
+    <circle cx="0" cy="0" r="6" fill="#fff" />
+  </g>
+
+  <!-- city skyline (simplified, Pokémon-ish shapes) -->
+  <g transform="translate(0,330) scale(1)">
+    <!-- buildings row -->
+    <rect x="40" y="220" width="160" height="340" rx="8" fill="#e3eefc" />
+    <rect x="220" y="180" width="120" height="380" rx="6" fill="#d7e7ff" />
+    <rect x="360" y="240" width="190" height="320" rx="10" fill="#cfeaff" />
+    <rect x="580" y="200" width="130" height="360" rx="6" fill="#e9f6ff" />
+    <rect x="740" y="160" width="220" height="400" rx="10" fill="#d6eefc" />
+    <rect x="980" y="210" width="160" height="350" rx="8" fill="#cfe7ff" />
+    <rect x="1160" y="190" width="220" height="370" rx="10" fill="#eaf6ff" />
+    <rect x="1400" y="230" width="120" height="330" rx="6" fill="#d9eeff" />
+
+    <!-- windows -->
+    <g fill="#a9d7ff" opacity="0.9">
+      <rect x="68" y="260" width="28" height="28" rx="3" />
+      <rect x="108" y="260" width="28" height="28" rx="3" />
+      <rect x="148" y="260" width="28" height="28" rx="3" />
+
+      <rect x="232" y="220" width="24" height="24" rx="3" />
+      <rect x="268" y="220" width="24" height="24" rx="3" />
+
+      <rect x="388" y="280" width="28" height="28" rx="3" />
+      <rect x="428" y="280" width="28" height="28" rx="3" />
+      <rect x="468" y="280" width="28" height="28" rx="3" />
+
+      <rect x="612" y="240" width="24" height="24" rx="3" />
+      <rect x="656" y="240" width="24" height="24" rx="3" />
+
+      <rect x="796" y="200" width="28" height="28" rx="3" />
+      <rect x="836" y="200" width="28" height="28" rx="3" />
+      <rect x="876" y="200" width="28" height="28" rx="3" />
+
+      <rect x="1004" y="260" width="28" height="28" rx="3" />
+      <rect x="1044" y="260" width="28" height="28" rx="3" />
+
+      <rect x="1188" y="240" width="28" height="28" rx="3" />
+      <rect x="1228" y="240" width="28" height="28" rx="3" />
+
+      <rect x="1416" y="270" width="24" height="24" rx="3" />
+    </g>
+
+    <!-- small details: trees and signs -->
+    <g transform="translate(40,520)">
+      <circle cx="12" cy="-8" r="20" fill="#8fd18b" />
+      <rect x="8" y="-8" width="8" height="28" fill="#7a5a3c" rx="2" />
+    </g>
+    <g transform="translate(300,520)">
+      <circle cx="12" cy="-6" r="18" fill="#93d587" />
+      <rect x="10" y="-6" width="6" height="26" fill="#7a5a3c" rx="2" />
+    </g>
+
+    <!-- a subtle path/road in front -->
+    <path d="M0 660 H1600 V720 H0 Z" fill="#f5f4f2" opacity="0.95" />
+    <rect x="0" y="692" width="1600" height="8" fill="#e8e6e3" opacity="0.8" />
+  </g>
+
+  <!-- soft clouds -->
+  <g fill="#ffffff" opacity="0.85">
+    <ellipse cx="450" cy="120" rx="80" ry="30" />
+    <ellipse cx="520" cy="110" rx="60" ry="22" />
+    <ellipse cx="1100" cy="90" rx="120" ry="36" />
+  </g>
+
+  <!-- signature: small pokeball icon bottom-right -->
+  <g transform="translate(1450,780) scale(0.7)">
+    <circle cx="0" cy="0" r="20" fill="#fff" stroke="#333" stroke-width="2" />
+    <path d="M -20 0 A 20 20 0 0 1 20 0 L 20 4 A 24 24 0 0 1 -20 4 Z" fill="#e33f3f" />
+    <circle cx="0" cy="0" r="6" fill="#222" />
+  </g>
+</svg>
